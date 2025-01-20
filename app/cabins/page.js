@@ -1,13 +1,14 @@
-import CabinCard from "@/app/_components/CabinCard";
-import { getCabins } from "../_lib/data-service";
+import { Suspense } from "react";
+import CabinsList from "../_components/CabinsList";
+import Spinner from "../_components/Spinner";
+import Filter from "../_components/Filter";
 
 export const metadata = {
-  title: 'Cabins',
-}
-export default async function Page() {
+  title: "Cabins",
+};
+export default function Page({searchParams}) {
 
-  const cabins = await getCabins();
-
+  const filter = searchParams.capacity ?? "all";
 
   return (
     <div>
@@ -22,14 +23,13 @@ export default async function Page() {
         away from home. The perfect spot for a peaceful, calm vacation. Welcome
         to paradise.
       </p>
+      <div className="flex justify-end mb-4 ">
+      <Filter />
+      </div>
 
-      {cabins.length > 0 && (
-        <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 xl:gap-14">
-          {cabins?.map((cabin) => (
-            <CabinCard cabin={cabin} key={cabin.id} />
-          ))}
-        </div>
-      )}
+      <Suspense fallback={<Spinner />} key ={filter} >
+        <CabinsList filter = {filter} />
+      </Suspense>
     </div>
   );
 }
