@@ -44,7 +44,7 @@ export default async function Page({params}) {
 
           <p className="text-lg text-primary-300 mb-10">
             <TextExpander>{description}</TextExpander>
-            <Logo />
+            {/* <Logo /> */}
             </p>
 
           <ul className="flex flex-col gap-4 mb-7">
