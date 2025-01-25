@@ -30,7 +30,7 @@ function DateSelector({ cabin, settings, bookedDates }) {
 
   // SETTINGS
   const { minBookingLength, maxBookingLength } = settings;
-  console.log(settings)
+ 
 
   const handleSetRange = (selectedRange) => {
     if (selectedRange === undefined) return;

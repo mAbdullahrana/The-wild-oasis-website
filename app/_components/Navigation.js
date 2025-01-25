@@ -1,26 +1,41 @@
-export default function Navigation() {
-const a = 10;
+import Link from "next/link";
+import { auth } from "../_lib/auth";
+
+export default async function Navigation() {
+
+  const session = await auth()
+
+  console.log(session)
+
 
   return (
     <nav className="z-10 text-xl">
       <ul className="flex gap-16 items-center">
         <li>
-          <a href="/cabins" className="hover:text-accent-400 transition-colors">
+          <Link href="/cabins" className="hover:text-accent-400 transition-colors">
             Cabins
-          </a>
+          </Link>
         </li>
         <li>
-          <a href="/about" className="hover:text-accent-400 transition-colors">
+          <Link href="/about" className="hover:text-accent-400 transition-colors">
             About
-          </a>
+          </Link>
         </li>
         <li>
-          <a
+          {
+            session?.user ?  <Link
+            href="/account"
+            className="hover:text-accent-400 transition-colors flex gap-2 items-center"
+          >
+           <span><img className="h-8 rounded-full" src={session.user.image} alt={session.user.name} /></span> Guest area
+          </Link> :
+          <Link
             href="/account"
             className="hover:text-accent-400 transition-colors"
           >
             Guest area
-          </a>
+          </Link>
+}
         </li>
       </ul>
     </nav>
