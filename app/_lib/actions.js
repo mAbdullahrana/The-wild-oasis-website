@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { auth, signIn, signOut } from "./auth";
 import { supabase } from "./supabase";
 import { getBookings } from "./data-service";
+import { redirect } from "next/navigation";
 
 export async function signInAction(provider) {
   await signIn(provider, { redirectTo: "/account" });
@@ -45,6 +46,7 @@ export async function updateGuest(formData) {
 }
 
 export async function deleteReservation(bookingId) {
+ 
   const session = await auth();
 
   if (!session) throw new Error("You must be logged in to update the profile");
@@ -65,4 +67,31 @@ export async function deleteReservation(bookingId) {
     throw new Error("Booking could not be deleted");
   }
   revalidatePath("/account/reservations");
+}
+
+
+
+
+export async function updateReservation(formData){
+  const session = await auth();
+
+  if (!session) throw new Error("You must be logged in to update the profile");
+
+ const numGuests =  formData.get('numGuests')
+ const observations =  formData.get('observations')
+ const reservationID =  formData.get('reservationID')
+ 
+
+  const { error } = await supabase
+    .from('bookings')
+    .update({numGuests , observations})
+    .eq('id', reservationID)
+
+  if (error) {
+    console.error(error);
+    throw new Error('Booking could not be updated');
+  }
+
+  revalidatePath(`/account/reservations/edit/${reservationID}`)
+  redirect('/account/reservations')
 }
