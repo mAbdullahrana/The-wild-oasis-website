@@ -56,7 +56,7 @@ function UpdateProfileForm({ children, countryFlag, user }) {
 
       <div className="flex justify-end items-center gap-6">
         <SubmitButton pendingLabel={"Upating..."}>
-          "Update profile"
+          Update profile
         </SubmitButton>
       </div>
     </form>
